@@ -5,6 +5,7 @@
     <artifactId>query-dsl</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
+    <name>cloudImpl-query-dsl</name>
     <description>rest api query dsl</description>
     <url>http://github.com/cloudimpl/query-dsl</url>
     <licenses>
