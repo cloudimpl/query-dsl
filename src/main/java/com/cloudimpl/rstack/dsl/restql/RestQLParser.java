@@ -34,6 +34,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     final Rule AND = StringIgnoreCaseWS("and").label("AND");
     final Rule IN = StringIgnoreCaseWS("in").label("IN");
     final Rule OR = StringIgnoreCaseWS("or").label("OR");
+    final Rule LIKE = StringIgnoreCaseWS("like").label("LIKE");
     final Rule OB = Terminal("(");
     final Rule CB = Terminal(")");
     final Rule OSB = Terminal("[");
@@ -146,6 +147,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 
     public Rule BooleanFieldExp() {
         return Sequence(JsonIdentifier(true), push(new VarNode(match())), FirstOf(
+                Sequence(LIKE, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.LIKE, pop(ConstNode.class)))),
                 Sequence(EQ, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.EQ, pop(ConstNode.class)))),
                 Sequence(NE, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.NE, pop(ConstNode.class)))),
                 Sequence(GT, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.GT, pop(ConstNode.class)))),
@@ -377,7 +379,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 
     public static void main(String[] args) {
 //
-        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  age = 30 and (st > 'abc' or country = 'LK') and xx in [309,23.5]");
+        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  age = 30 and (st > 'abc' or country like '%LK%') and xx in [309,23.5]");
 //        System.out.println("gson : " + GsonCodec.encode(node));
 //        System.out.println("json : " + node.toJson());
 //
