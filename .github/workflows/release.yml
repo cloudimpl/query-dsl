@@ -32,7 +32,7 @@ jobs:
       run: |
         export VERSION=`cat pom.xml | grep "<version>" | head -n 1 |  awk -F'>' '{print $2}' | awk -F'<' '{print $1}'`
         export DSL_VERSION=${VERSION}.${GITHUB_RUN_NUMBER}
-        echo "DSL_VERSION=${OUTSTACK_VERSION}" > ${GITHUB_ENV}
+        echo "DSL_VERSION=${DSL_VERSION}" > ${GITHUB_ENV}
         echo $DSL_VERSION
         
     - name: Set errcode build number
