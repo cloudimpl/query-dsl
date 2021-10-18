@@ -133,11 +133,11 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     }
 
     Rule orderByExpression() {
-        return Sequence(orderBy(),push(new OrderByExpNode().add(pop(OrderByNode.class))), ZeroOrMore(Sequence(COMMA, orderBy(),push(pop(1,OrderByExpNode.class).add(pop(OrderByNode.class))))));
+        return Sequence(orderBy(),push(new OrderByExpNode().add(pop(OrderByNode.class))), ZeroOrMore(Sequence(COMMA, orderBy(),push(pop(1,OrderByExpNode.class).add(pop(OrderByNode.class))))),EOI);
     }
 
     Rule orderBy() {
-        return Sequence(JsonIdentifier(true), push(new OrderByNode(match(), OrderByNode.Order.ASC)),
+        return Sequence(FirstOf(orderByFieldIdentiferWithType(),orderByFieldIdentifier()),
                  Optional(Sequence(Terminal(":"),
                         FirstOf(
                                 Sequence(StringIgnoreCaseWS("desc"), push(pop(OrderByNode.class).setOrder(OrderByNode.Order.DESC))),
@@ -145,6 +145,16 @@ public class RestQLParser extends BaseParser<RestQLNode> {
                         ))));
     }
 
+    Rule orderByFieldIdentifier()
+    {
+        return Sequence(JsonIdentifier(true),push(new OrderByNode(match().trim(), OrderByNode.Order.ASC)));
+    }
+    
+    Rule orderByFieldIdentiferWithType()
+    {
+        return Sequence(FirstOf(Terminal("S"),Terminal("s"),Terminal("B"),Terminal("b"),Terminal("N"),Terminal("n")),push(new OrderByNode(match().trim())),OB,JsonIdentifier(true),push(pop(OrderByNode.class).setFieldName(match().trim())),CB);
+    }
+    
     public Rule BooleanFieldExp() {
         return Sequence(JsonIdentifier(true), push(new VarNode(match())), FirstOf(
                 Sequence(LIKE, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.LIKE, pop(ConstNode.class)))),
@@ -383,6 +393,11 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 //        System.out.println("gson : " + GsonCodec.encode(node));
 //        System.out.println("json : " + node.toJson());
 //
+    RestQLNode orderBy = RestQLParser.parseOrderBy("name:DESC");
+    String f = "sfs.asfas";
+    String[] s = f.split("\\.");
+    
+        System.out.println(s.length);
 //        RestQLNode node2 = RestQLNode.fromJson(node.toJson());
         SqlNode sql = new SqlNode();
         String out = sql.eval(node);

@@ -17,12 +17,47 @@ public class OrderByNode implements RestQLNode {
     public enum Order {
         ASC, DESC
     }
-    private final String fieldName;
+
+    public enum DataType {
+        STRING,
+        NUMBER,
+        BOOL;
+
+        public static DataType from(String s) {
+            switch (s) {
+                case "S":
+                case "s": {
+                    return STRING;
+                }
+                case "N":
+                case "n": {
+                    return NUMBER;
+                }
+                case "B":
+                case "b": {
+                    return BOOL;
+                }
+                default: {
+                    throw new RuntimeException("unknow data type : " + s);
+                }
+            }
+        }
+    }
+
+    private String fieldName;
+    private DataType dataType;
     private Order order;
 
     public OrderByNode(String fieldName, Order order) {
         this.fieldName = fieldName;
         this.order = order;
+        this.dataType = DataType.STRING;
+    }
+
+    public OrderByNode(String type) {
+        this.dataType = DataType.from(type);
+        this.order = Order.ASC;
+
     }
 
     public Order getOrder() {
@@ -31,6 +66,16 @@ public class OrderByNode implements RestQLNode {
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    public OrderByNode setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+        return this;
+    }
+
+    
+    public DataType getDataType() {
+        return dataType;
     }
 
     public OrderByNode setOrder(Order order) {
