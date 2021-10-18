@@ -49,7 +49,7 @@ public class OrderByNode implements RestQLNode {
     private Order order;
 
     public OrderByNode(String fieldName, Order order) {
-        this.fieldName = fieldName;
+        this.fieldName = fieldName.trim();
         this.order = order;
         this.dataType = DataType.STRING;
     }
