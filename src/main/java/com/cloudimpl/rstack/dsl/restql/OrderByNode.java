@@ -73,6 +73,11 @@ public class OrderByNode implements RestQLNode {
         return this;
     }
 
+    public OrderByNode setDataType(DataType dataType) {
+        this.dataType = dataType;
+        return this;
+    }
+
     
     public DataType getDataType() {
         return dataType;
@@ -114,6 +119,7 @@ public class OrderByNode implements RestQLNode {
         json.addProperty("type", "orderByNode");
         json.addProperty("fieldName", this.fieldName);
         json.addProperty("order", this.order.name());
+        json.addProperty("dataType", this.dataType.name());
         return json;
     }
 }

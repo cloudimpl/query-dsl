@@ -64,7 +64,7 @@ public interface RestQLNode {
                 return (T) arrNode;
             }
             case "orderByNode": {
-                OrderByNode orderBy = new OrderByNode(json.get("fieldName").getAsString(), OrderByNode.Order.valueOf(json.get("order").getAsString()));
+                OrderByNode orderBy = new OrderByNode(json.get("fieldName").getAsString(), OrderByNode.Order.valueOf(json.get("order").getAsString())).setDataType(OrderByNode.DataType.valueOf(json.get("dataType").getAsString()));
                 return (T) orderBy;
             }
             case "orderByExpNode": {
