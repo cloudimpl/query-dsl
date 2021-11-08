@@ -35,6 +35,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     final Rule IN = StringIgnoreCaseWS("in").label("IN");
     final Rule OR = StringIgnoreCaseWS("or").label("OR");
     final Rule LIKE = StringIgnoreCaseWS("like").label("LIKE");
+    final Rule NOT = StringIgnoreCaseWS("not").label("NOT");
     final Rule OB = Terminal("(");
     final Rule CB = Terminal(")");
     final Rule OSB = Terminal("[");
@@ -157,6 +158,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     
     public Rule BooleanFieldExp() {
         return Sequence(JsonIdentifier(true), push(new VarNode(match())), FirstOf(
+                Sequence(NOT,LIKE, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.NOT_LIKE, pop(ConstNode.class)))),
                 Sequence(LIKE, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.LIKE, pop(ConstNode.class)))),
                 Sequence(EQ, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.EQ, pop(ConstNode.class)))),
                 Sequence(NE, FieldValueExp(), push(new RelNode(pop(1, VarNode.class).getVar(), RelNode.Op.NE, pop(ConstNode.class)))),
@@ -389,11 +391,11 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 
     public static void main(String[] args) {
 //
-        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  age = 30 and (st > 'abc' or country like '%LK%') and xx in [309,23.5]");
+        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5]");
 //        System.out.println("gson : " + GsonCodec.encode(node));
 //        System.out.println("json : " + node.toJson());
 //
-    RestQLNode orderBy = RestQLParser.parseOrderBy("name:DESC");
+    RestQLNode orderBy = RestQLParser.parseOrderBy("_name:DESC");
     String f = "sfs.asfas";
     String[] s = f.split("\\.");
     

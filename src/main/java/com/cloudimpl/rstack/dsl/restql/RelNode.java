@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 public class RelNode implements RestQLNode {
 
     public enum Op {
-        EQ(" = "), GT(" > "), GTE(" >= "), LT(" < "), LTE(" <= "), NE(" <> "), IN(" in ") ,LIKE(" like ");
+        EQ(" = "), GT(" > "), GTE(" >= "), LT(" < "), LTE(" <= "), NE(" <> "), IN(" in ") ,LIKE(" like "),NOT_LIKE(" not like ");
 
         private String op;
 
