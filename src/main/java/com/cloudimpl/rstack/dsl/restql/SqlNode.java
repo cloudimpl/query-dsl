@@ -37,6 +37,11 @@ public class SqlNode implements RestQLNode {
             BinNode binNode = BinNode.class.cast(node);
             return "(" + binNode.getLeft().eval(this) + binNode.getOp().getOp() + binNode.getRight().eval(this) + ")";
         }
+        else if(node instanceof FieldCheckNode)
+        {
+            FieldCheckNode checkNode = FieldCheckNode.class.cast(node);
+            return checkNode.isCheckExist() ? checkNode.getFieldName() + " is not null" : checkNode.getFieldName() + "is null";
+        }
         throw new RuntimeException("unknown node :" + node.getClass().getName());
     }
 

@@ -391,7 +391,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 
     public static void main(String[] args) {
 //
-        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5]");
+        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5] and abc is not null");
 //        System.out.println("gson : " + GsonCodec.encode(node));
 //        System.out.println("json : " + node.toJson());
 //
