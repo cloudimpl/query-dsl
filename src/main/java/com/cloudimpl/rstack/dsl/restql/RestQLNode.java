@@ -44,6 +44,10 @@ public interface RestQLNode {
                 BigDecimal val = json.get("val").getAsBigDecimal();
                 return (T) new ConstNumberNode(val);
             }
+            case "checkFieldNode": {
+                Boolean val = json.get("checkExist").getAsBoolean();
+                return (T) new FieldCheckNode(json.get("fieldName").getAsString(),val);
+            }
             case "boolNode": {
                 boolean val = json.get("val").getAsBoolean();
                 return (T) new ConstBooleanNode(val);
@@ -74,7 +78,7 @@ public interface RestQLNode {
                 return (T) orderByExp;
             }
             default: {
-                throw new RuntimeException("unknow type: " + json);
+                throw new RuntimeException("unknown type: " + json);
             }
         }
     }
