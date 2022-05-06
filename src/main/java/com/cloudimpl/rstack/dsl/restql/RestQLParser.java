@@ -23,7 +23,7 @@ import org.parboiled.support.ParsingResult;
  */
 public class RestQLParser extends BaseParser<RestQLNode> {
 
-    private static RestQLParser instance = Parboiled.createParser(RestQLParser.class);
+    private static ThreadLocal<RestQLParser> instance = ThreadLocal.withInitial(()->Parboiled.createParser(RestQLParser.class));
 
     final Rule EQ = Terminal("=", Ch('='));
     final Rule GT = Terminal(">", AnyOf("=>"));
@@ -370,7 +370,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     }
 
     public static RestQLNode parse(String rql) {
-        ParsingResult<?> result = new ReportingParseRunner(instance.query()).run(rql);
+        ParsingResult<?> result = new ReportingParseRunner(instance.get().query()).run(rql);
 
         if (result.hasErrors()) {
             throw new RestQLException(printParseErrors(result));
@@ -380,7 +380,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     }
 
     public static OrderByExpNode parseOrderBy(String rql) {
-        ParsingResult<?> result = new ReportingParseRunner(instance.orderByExpression()).run(rql);
+        ParsingResult<?> result = new ReportingParseRunner(instance.get().orderByExpression()).run(rql);
 
         if (result.hasErrors()) {
             throw new RestQLException(printParseErrors(result));
