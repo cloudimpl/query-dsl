@@ -205,7 +205,11 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     }
 
     public Rule FieldValueExp() {
-        return literal();
+        return FirstOf(literal(),FieldPlaceHolder());
+    }
+
+    public Rule FieldPlaceHolder(){
+        return Sequence(Sequence(Ch('$'),DecimalNumeral(),Spacing()),push(new PlaceHolderNode(match())));
     }
 
     public Rule isNull() {
@@ -391,7 +395,7 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 
     public static void main(String[] args) {
 //
-        RestQLNode node = RestQLParser.parse("name.safsa = 'nuwan' or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5] and abc is not null");
+        RestQLNode node = RestQLParser.parse("name.safsa = $1 or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5] and abc is not null");
 //        System.out.println("gson : " + GsonCodec.encode(node));
 //        System.out.println("json : " + node.toJson());
 //

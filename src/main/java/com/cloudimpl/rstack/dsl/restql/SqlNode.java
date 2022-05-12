@@ -30,7 +30,10 @@ public class SqlNode implements RestQLNode {
             return String.valueOf(ConstNumberNode.class.cast(node).getVal());
         } else if (node instanceof ConstBooleanNode) {
             return String.valueOf(ConstBooleanNode.class.cast(node).getVal());
-        } else if (node instanceof RelNode) {
+        }else if(node instanceof PlaceHolderNode){
+            return String.valueOf(PlaceHolderNode.class.cast(node).getVal());
+        }
+        else if (node instanceof RelNode) {
             RelNode rel = RelNode.class.cast(node);
             return rel.getFieldName() + rel.getOp().getOp() + (String) rel.getConstNode().eval(this);
         } else if (node instanceof BinNode) {

@@ -40,6 +40,10 @@ public interface RestQLNode {
                 String val = json.get("val").getAsString();
                 return (T) new ConstStringNode(val);
             }
+            case "placeHolderNode":{
+                String val = json.get("val").getAsString();
+                return (T)new PlaceHolderNode(val);
+            }
             case "numberNode": {
                 BigDecimal val = json.get("val").getAsBigDecimal();
                 return (T) new ConstNumberNode(val);
