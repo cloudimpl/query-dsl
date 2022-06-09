@@ -256,8 +256,8 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     Rule literalB() {
         return Sequence(
                 FirstOf(
-                        Sequence("true", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match())))),
-                        Sequence("false", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match()))))
+                        Sequence("true", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim())))),
+                        Sequence("false", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim()))))
                 ),
                 Spacing()
         );
@@ -270,8 +270,8 @@ public class RestQLParser extends BaseParser<RestQLNode> {
                         Sequence(IntegerLiteral(), push(new ConstNumberNode(new BigDecimal(match())))),
                         Sequence(CharLiteral(), push(new ConstStringNode(match()))),
                         Sequence(StringLiteral(), push(new ConstStringNode(match()))),
-                        Sequence("true", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match())))),
-                        Sequence("false", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match())))),
+                        Sequence("true", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim())))),
+                        Sequence("false", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim())))),
                         Sequence("null", TestNot(LetterOrDigit()), push(new ConstStringNode(match())))
                 ),
                 Spacing()
