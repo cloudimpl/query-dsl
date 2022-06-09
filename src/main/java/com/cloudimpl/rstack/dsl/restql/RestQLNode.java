@@ -53,7 +53,7 @@ public interface RestQLNode {
                 return (T) new FieldCheckNode(json.get("fieldName").getAsString(),val);
             }
             case "boolNode": {
-                boolean val = json.get("val").getAsBoolean();
+                String val = json.get("val").getAsString();
                 return (T) new ConstBooleanNode(val);
             }
             case "boolArrNode": {
