@@ -256,8 +256,8 @@ public class RestQLParser extends BaseParser<RestQLNode> {
     Rule literalB() {
         return Sequence(
                 FirstOf(
-                        Sequence("true", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim())))),
-                        Sequence("false", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim()))))
+                        Sequence(StringIgnoreCaseWS("true"), push(new ConstBooleanNode(match().trim()))),
+                        Sequence(StringIgnoreCaseWS("false"), push(new ConstBooleanNode(match().trim())))
                 ),
                 Spacing()
         );
@@ -270,8 +270,8 @@ public class RestQLParser extends BaseParser<RestQLNode> {
                         Sequence(IntegerLiteral(), push(new ConstNumberNode(new BigDecimal(match())))),
                         Sequence(CharLiteral(), push(new ConstStringNode(match()))),
                         Sequence(StringLiteral(), push(new ConstStringNode(match()))),
-                        Sequence("true", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim())))),
-                        Sequence("false", TestNot(LetterOrDigit()), push(new ConstBooleanNode(Boolean.valueOf(match().trim())))),
+                        Sequence(StringIgnoreCaseWS("true"), push(new ConstBooleanNode(match().trim()))),
+                        Sequence(StringIgnoreCaseWS("false"), push(new ConstBooleanNode(match().trim()))),
                         Sequence("null", TestNot(LetterOrDigit()), push(new ConstStringNode(match())))
                 ),
                 Spacing()
@@ -395,7 +395,8 @@ public class RestQLParser extends BaseParser<RestQLNode> {
 
     public static void main(String[] args) {
 //
-        RestQLNode node = RestQLParser.parse("name.safsa = $1 or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5] and abc is not null");
+        //RestQLNode node = RestQLParser.parse("name.safsa = $1 or  _age = 30 and (st > 'abc' or country not like '%LK%') and xx in [309,23.5] and abc is not null");
+        RestQLNode node = RestQLParser.parse("isStaticLocation=false");
 //        System.out.println("gson : " + GsonCodec.encode(node));
 //        System.out.println("json : " + node.toJson());
 //

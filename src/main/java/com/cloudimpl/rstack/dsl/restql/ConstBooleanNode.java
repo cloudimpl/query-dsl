@@ -16,8 +16,8 @@ public class ConstBooleanNode implements ConstNode{
 
     private final boolean val;
 
-    public ConstBooleanNode(boolean val) {
-        this.val = val;
+    public ConstBooleanNode(String val) {
+        this.val = Boolean.valueOf(val);
     }
 
     public boolean getVal() {
